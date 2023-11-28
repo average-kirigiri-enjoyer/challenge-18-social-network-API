@@ -1,0 +1,15 @@
+{
+  "name": "challenge-18-social-network-api",
+  "version": "1.0.0",
+  "description": "weekly challenge for module 18; building an API for a social networking application",
+  "main": "server.js",
+  "scripts": {
+    "test": "console.log('test');"
+  },
+  "author": "ethan (average-kirigiri-enjoyer)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.1"
+  }
+}
