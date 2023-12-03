@@ -75,6 +75,11 @@ thoughtSchema.virtual('formattedDate').get(() =>
   return this.createdAt.toISOString().split('T')[0];
 });
 
+thoughtSchema.virtual('reactionCount').get(() =>
+{
+  return this.reactions.length;
+});
+
 //initializes the thought model using the above schema
 const Thought = model('Thought', thoughtSchema);
 
