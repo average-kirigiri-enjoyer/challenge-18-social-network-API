@@ -42,9 +42,17 @@ const userSchema = new Schema(
       ref: 'User',
     },
   ],
+},
+{
+  //allows the display of virtuals when returning JSON data
+  toJSON:
+  {
+    virtuals: true,
+  },
+  id: false, //excludes extra ID value when returning JSON data
 });
 
-userSchema.virtual('friendCount').get(() =>
+userSchema.virtual('friendCount').get(function()
 {
   return this.friends.length;
 });

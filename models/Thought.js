@@ -26,14 +26,16 @@ const reactionSchema = new Schema(
   },
 },
 {
+  //allows the display of virtuals when returning JSON data
   toJSON:
   {
     virtuals: true,
-  }
+  },
+  id: false, //excludes extra ID value when returning JSON data
 });
 
 //virtual property for reactionSchema which formats the creation date upon query
-reactionSchema.virtual('formattedDate').get(() =>
+reactionSchema.virtual('formattedDate').get(function()
 {
   return this.createdAt.toISOString().split('T')[0];
 });
@@ -63,19 +65,21 @@ const thoughtSchema = new Schema(
   reactions: [reactionSchema],
 },
 {
+  //allows the display of virtuals when returning JSON data
   toJSON:
   {
     virtuals: true,
   },
+  id: false, //excludes extra ID value when returning JSON data
 });
 
 //virtual property for thoguhtSchema which formats the creation date upon query
-thoughtSchema.virtual('formattedDate').get(() =>
+thoughtSchema.virtual('formattedDate').get(function()
 {
   return this.createdAt.toISOString().split('T')[0];
 });
 
-thoughtSchema.virtual('reactionCount').get(() =>
+thoughtSchema.virtual('reactionCount').get(function()
 {
   return this.reactions.length;
 });

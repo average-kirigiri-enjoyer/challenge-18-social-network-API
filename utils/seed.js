@@ -23,6 +23,13 @@ const seedDB = async (data) =>
   {
     db.once('open', async () =>
     {
+      const userCollection = await db.db.listCollections({name: 'users'});
+
+      if (userCollection)
+      {
+        await db.dropCollection('users');
+      }
+
       await User.insertMany(data);
       console.log('seeding successful');
       process.exit(0);
