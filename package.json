@@ -4,7 +4,8 @@
   "description": "weekly challenge for module 18; building an API for a social networking application",
   "main": "server.js",
   "scripts": {
-    "test": "console.log('test');"
+    "test": "console.log('test');",
+    "seed": "node ./utils/seed.js"
   },
   "author": "ethan (average-kirigiri-enjoyer)",
   "license": "MIT",
