@@ -1,8 +1,9 @@
-//importing mongoose models
+//importing packages & models
+const router = require ('express').Router();
 const {User} = require('../../models');
 
 //GET route to retrieve all users
-app.get('/', async (req, res) =>
+router.get('/', async (req, res) =>
 {
   try
   {
@@ -11,28 +12,28 @@ app.get('/', async (req, res) =>
   }
   catch (err)
   {
-    console.log('an error occured while trying to fulfill your request', err);
-    res.status(500).json({name: 'an error occured while trying to fulfill your request'});
+    console.log('an error occured while trying to fulfill your request;', err);
+    res.status(500).json({message: 'an error occured while trying to fulfill your request'});
   }
 });
 
 //GET route to retrieve a specific user by ID
-app.get('/:id', async (req, res) =>
+router.get('/:id', async (req, res) =>
 {
   try
   {
-    const result = await User.findbyID(req.params.id);
+    const result = await User.findOne({_id: req.params.id});
     res.status(200).json(result);
   }
   catch (err)
   {
-    console.log('an error occured while trying to fulfill your request', err);
-    res.status(500).json({name: 'an error occured while trying to fulfill your request'});
+    console.log('an error occured while trying to fulfill your request;', err);
+    res.status(500).json({message: 'an error occured while trying to fulfill your request'});
   }
 });
 
 //POST route to create a new user
-app.post('/', (req, res) =>
+router.post('/', async (req, res) =>
 {
   try
   {
@@ -50,19 +51,19 @@ app.post('/', (req, res) =>
     }
     else
     {
-      console.log('an error occured while trying to create the user', err);
-      res.status(500).json({name: 'an error occured while trying to create the user'});
+      console.log('an error occured while trying to create the user;', err);
+      res.status(500).json({message: 'an error occured while trying to create the user'});
     }
   }
   catch (err)
   {
-    console.log('an error occured while trying to fulfill your request', err);
-    res.status(500).json({name: 'an error occured while trying to fulfill your request'});
+    console.log('an error occured while trying to fulfill your request;', err);
+    res.status(500).json({message: 'an error occured while trying to fulfill your request'});
   }
 });
 
 //PUT route to update a specific user by ID
-app.put('/:id', async (req, res) =>
+router.put('/:id', async (req, res) =>
 {
   try
   {
@@ -70,7 +71,7 @@ app.put('/:id', async (req, res) =>
     {
       username: req.body.username,
       email: req.body.email,
-    }, {new: true});
+    }, {new: true, runValidators: true}); //returns updated data, and runs validators before updating
 
     if (updatedUser)
     {
@@ -78,19 +79,19 @@ app.put('/:id', async (req, res) =>
     }
     else
     {
-      console.log('an error occured while trying to update the user', err);
-      res.status(500).json({name: 'an error occured while trying to update the user'});
+      console.log('an error occured while trying to update the user;', err);
+      res.status(500).json({message: 'an error occured while trying to update the user'});
     }
   }
   catch (err)
   {
-    console.log('an error occured while trying to fulfill your request', err);
-    res.status(500).json({name: 'an error occured while trying to fulfill your request'});
+    console.log('an error occured while trying to fulfill your request;', err);
+    res.status(500).json({message: 'an error occured while trying to fulfill your request'});
   }
 });
 
 //DELETE route to delete a specific user by ID
-app.delete('/:id', async (req, res) =>
+router.delete('/:id', async (req, res) =>
 {
   try
   {
@@ -98,27 +99,73 @@ app.delete('/:id', async (req, res) =>
 
     if (deletedUser)
     {
-      res.status(200).json(deletedUser);
+      res.status(200).json({message: 'the following user has been deleted;', deletedUser});
     }
     else
     {
-      console.log('an error occured while trying to delete the user', err);
-      res.status(500).json({name: 'an error occured while trying to delete the user'});
+      console.log('an error occured while trying to delete the user;', err);
+      res.status(500).json({message: 'an error occured while trying to delete the user'});
     }
   }
   catch (err)
   {
-    console.log('an error occured while trying to fulfill your request', err);
-    res.status(500).json({name: 'an error occured while trying to fulfill your request'});
+    console.log('an error occured while trying to fulfill your request;', err);
+    res.status(500).json({message: 'an error occured while trying to fulfill your request'});
   }
 });
 
-//post route to add a friend to a user's friend list
-  //gets user objectId from route parameters
-  //gets friend objectId from route parameters
-  //adds friend's objectId to an array contained in the user document
+//POST route to add a friend to a user's friend list
+router.post('/:id/friends/:friendId', async (req, res) =>
+{
+  try
+  {
+    const updatedUser = await User.findOneAndUpdate({_id: req.params.id},
+    {
+      $addToSet: {friends: req.params.friendId},
+    }, {new: true}); 
+  
+    if (updatedUser)
+    {
+      res.status(200).json(updatedUser);
+    }
+    else
+    {
+      console.log('an error occured while trying to add a friend;', err);
+      res.status(500).json({message: 'an error occured while trying to add a friend'});
+    }
+  }
+  catch (err)
+  {
+    console.log('an error occured while trying to fulfill your request;', err);
+    res.status(500).json({message: 'an error occured while trying to fulfill your request'});
+  }
+});
 
-//delete route to remove a friend from a user's friend list
-  //gets user objectId from route parameters
-  //gets friend objectId from route parameters
-  //removes friend's objectId from an array contained in the user document
+//DELETE route to remove a friend from a user's friend list
+router.delete('/:id/friends/:friendId', async (req, res) =>
+{
+  try
+  {
+    const updatedUser = await User.findOneAndUpdate({_id: req.params.id},
+    {
+      $pull: {friends: req.params.friendId},
+    }, {new: true}); 
+  
+    if (updatedUser)
+    {
+      res.status(200).json(updatedUser);
+    }
+    else
+    {
+      console.log('an error occured while trying to remove a friend;', err);
+      res.status(500).json({message: 'an error occured while trying to remove a friend'});
+    }
+  }
+  catch (err)
+  {
+    console.log('an error occured while trying to fulfill your request;', err);
+    res.status(500).json({message: 'an error occured while trying to fulfill your request'});
+  }
+});
+
+module.exports = router;
