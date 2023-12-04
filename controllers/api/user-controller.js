@@ -43,15 +43,14 @@ router.post('/', async (req, res) =>
       email: req.body.email,
     });
   
-    newUser.save();
-  
     if (newUser)
     {
+      newUser.save();
       res.status(200).json(newUser);
     }
     else
     {
-      console.log('an error occured while trying to create the user;', err);
+      console.log('an error occured while trying to create the user');
       res.status(500).json({message: 'an error occured while trying to create the user'});
     }
   }
@@ -79,7 +78,7 @@ router.put('/:id', async (req, res) =>
     }
     else
     {
-      console.log('an error occured while trying to update the user;', err);
+      console.log('an error occured while trying to update the user');
       res.status(500).json({message: 'an error occured while trying to update the user'});
     }
   }
@@ -103,7 +102,7 @@ router.delete('/:id', async (req, res) =>
     }
     else
     {
-      console.log('an error occured while trying to delete the user;', err);
+      console.log('an error occured while trying to delete the user');
       res.status(500).json({message: 'an error occured while trying to delete the user'});
     }
   }
@@ -130,7 +129,7 @@ router.post('/:id/friends/:friendId', async (req, res) =>
     }
     else
     {
-      console.log('an error occured while trying to add a friend;', err);
+      console.log('an error occured while trying to add a friend');
       res.status(500).json({message: 'an error occured while trying to add a friend'});
     }
   }
@@ -157,7 +156,7 @@ router.delete('/:id/friends/:friendId', async (req, res) =>
     }
     else
     {
-      console.log('an error occured while trying to remove a friend;', err);
+      console.log('an error occured while trying to remove a friend');
       res.status(500).json({message: 'an error occured while trying to remove a friend'});
     }
   }
