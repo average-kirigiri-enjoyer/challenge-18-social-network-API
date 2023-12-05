@@ -1,6 +1,10 @@
+//imports functionality from mongoose to create models
+//==============================================================
 const {Schema, model} = require('mongoose');
+//==============================================================
 
-//defines schema for a new user model
+//initializes user schema
+//==============================================================
 const userSchema = new Schema(
 {
   //username is a string, required, must be unique, and has whitespaces trimmed
@@ -11,6 +15,7 @@ const userSchema = new Schema(
     unique: true,
     trim: true,
   },
+  //email is a string, required, must be unique, and is validated via an email regex
   email:
   {
     type: String, //email is a string
@@ -51,13 +56,22 @@ const userSchema = new Schema(
   },
   id: false, //excludes extra ID value when returning JSON data
 });
+//==============================================================
 
+//virtual property for userSchema to return the number of friends a user has
+//==============================================================
 userSchema.virtual('friendCount').get(function()
 {
   return this.friends.length;
 });
+//==============================================================
 
 //initializes the user model using the above schema
+//==============================================================
 const User = model('User', userSchema);
+//==============================================================
 
+//exports user model
+//==============================================================
 module.exports = User;
+//==============================================================
