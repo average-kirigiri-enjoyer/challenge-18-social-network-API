@@ -11,7 +11,7 @@ const reactionSchema = new Schema(
   reactionId:
   {
     type: Schema.Types.ObjectId,
-    default: () => new Schema.Types.ObjectId(),
+    default: () => new mongoose.Types.ObjectId(),
   },
   //reactionBody is a required string, max length of 280 characters
   reactionBody:

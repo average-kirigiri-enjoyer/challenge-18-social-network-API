@@ -199,7 +199,7 @@ router.delete('/:id/reactions/:reactionId', async (req, res) =>
     //removes the desired reaction from the appropriate thought's reactions array via the reactionId
     const updatedThought = await Thought.findOneAndUpdate({_id: req.params.id},
     {
-      $pull: {reactions: {reactionId: req.params.reactionId}},
+      $pull: {reactions: {_id: req.params.reactionId}},
     }, {new: true}); //returns updated data
   
     //if the reaction was successfully removed from the thought, return the updated thought with a status 200
